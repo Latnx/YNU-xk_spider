@@ -30,5 +30,15 @@
 ## 使用方法
 
 1. 安装好环境，将chrome驱动放在python目录下
+
 2. 修改自定义部分
+
 3. 点击run.bat开始运行，若能出现正确提示则运行成功
+
+## 使用截图
+
+<img src="src\login.png" alt="login" style="zoom:38%;" />
+
+
+
+<img src="src\add.png" alt="add" style="zoom:38%;" />

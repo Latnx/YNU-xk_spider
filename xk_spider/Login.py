@@ -36,9 +36,13 @@ def get_params(username, password, free):
     html_ele = etree.HTML(html_str)
     image_url = html_ele.xpath('//img[@id="vcodeImg"]/@src')[0]
 
+
     i = 0
     n = 0
     while True:
+        response = requests.get(image_url)
+        with open(".\\temp.jpg", "wb") as fh:
+            fh.write(response.content)
         # 三次免费识别失败自动转为付费模式
         if free and n > 3:
             free = False
@@ -55,10 +59,6 @@ def get_params(username, password, free):
             captcha_value = getCaptcha_value(image_url)
         # 收费调用 识别率高 0.002元/次
         else:
-            response = requests.get(image_url)
-            fh = open(".\\temp.jpg", "wb")
-            fh.write(response.content)
-            fh.close()
             captcha_value = base64_api()
 
         driver.find_element_by_id('verifyCode').send_keys(captcha_value)
