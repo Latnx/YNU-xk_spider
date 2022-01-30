@@ -10,7 +10,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from send_qq import send_qq
-from GUI import captcha_handle
 
 
 def get_params(username, password, free):
@@ -50,15 +49,14 @@ def get_params(username, password, free):
             n = 0
             print("付费模式启动")
             send_qq("付费模式启动")
-
+        elif not free and n > 1:
+            print("验证失败")
+            send_qq("验证失败")
+            return
         driver.find_element_by_id('verifyCode').clear()
         # 免费讯飞api调用
         if free:
             captcha_value = getCaptcha_value(image_url)
-        # 两种自动识别失败后，使用手动模式添加
-        elif not free and n > 1:
-            print("自动验证失败")
-            captcha_value = captcha_handle()
         # 收费调用 识别率高 0.002元/次
         else:
             captcha_value = base64_api()
