@@ -14,7 +14,12 @@ headers = {
 }
 url = 'http://xk.ynu.edu.cn/xsxkapp/sys/xsxkapp/*default/index.do'
 
-GUI.login_gui()
+try:
+    f = open("info.json", "r")
+    if len(f.readline()) == 0:
+        GUI.login_gui()
+except FileNotFoundError:
+    GUI.login_gui()
 
 f = open("info.json", "r")
 info = json.loads(f.read())
@@ -24,6 +29,9 @@ pswd = info['user']['psw']
 
 headers['cookie'], headers['token'], batchCode = get_params(stdCode, pswd, free=True)
 headers['Referer'] = 'http://xk.ynu.edu.cn/xsxkapp/sys/xsxkapp/*default/grablessons.do?token=' + headers["token"]
+
+GUI.set_gui()
+
 gc = GetCourse.GetCourse(headers, stdCode, batchCode)
 ec = ThreadPoolExecutor()
 
@@ -36,6 +44,6 @@ for course in info["course_list"]:
                               course['delete_teacher'],
                               course['class_id'],
                               course['delete_id'],
-                              course['素选']))
+                              course['kind']))
 for future in as_completed(taskList):
     print(future.result())
