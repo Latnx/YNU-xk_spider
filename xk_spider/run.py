@@ -23,6 +23,7 @@ except FileNotFoundError:
 
 f = open("info.json", "r")
 info = json.loads(f.read())
+f.close()
 
 stdCode = info['user']['num']
 pswd = info['user']['psw']
@@ -32,7 +33,11 @@ headers['Referer'] = 'http://xk.ynu.edu.cn/xsxkapp/sys/xsxkapp/*default/grabless
 
 GUI.set_gui()
 
-gc = GetCourse.GetCourse(headers, stdCode, batchCode)
+f = open("info.json", "r")
+info = json.loads(f.read())
+f.close()
+
+gc = GetCourse(headers, stdCode, batchCode)
 ec = ThreadPoolExecutor()
 
 taskList = []

@@ -33,7 +33,7 @@ def set_gui():
               [sg.Text("*待抢课程id", size=(12, 1)), sg.Input(key="class_id")],
               [sg.Text("*删除课程id", size=(12, 1)), sg.Input(key="delete_id")],
               [sg.Text("课程种类", size=(12, 1)), sg.Combo(("主修", "素选"), size=(10, 1), key="kind")],
-              [sg.Button("继续添加"), sg.Button("完成")]]
+              [sg.Button("继续添加"), sg.Button("不再添加")]]
 
     window = sg.Window("添加", layout)
     with open("info.json", "r+") as info:
