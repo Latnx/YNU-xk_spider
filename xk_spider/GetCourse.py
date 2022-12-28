@@ -68,19 +68,26 @@ class GetCourse:
                     print('登录失效，请重新登录')
                     send_qq('登录失效，请重新登录')
                     return False
-
+                MatchNum = 0
                 for course in datalist:
                     if class_id not in course['teachingClassID']:
                         continue
+                    if teacher not in course['teacherName']:
+                        continue
+                    MatchNum += 1
                     remain = int(course['classCapacity']) - int(course['numberOfFirstVolunteer'])
-                    if remain > 0 and course['teacherName'] == teacher:
-                        string = f'{course_name} {teacher}：{remain}人空缺'
+                    if remain > 0:
+                        string = f'{course_name} {teacher}：已选{course["numberOfSelected"]}人，{remain}人空缺'
                         print(string)
                         send_qq(string)
                         if delete_name != '':
                             self.get_delete(delete_name, delete_teacher)
                         res = self.post_add(course_name, teacher, class_type, course['teachingClassID'])
                         return res
+
+                if MatchNum == 0:
+                    print(f"未找到{teacher}相匹配课程，请检查。")
+                    raise TypeError
 
                 print(f'{course_name} {teacher}：人数已满 {time.ctime()}')
                 time.sleep(15 + random.randint(-3, 3))
